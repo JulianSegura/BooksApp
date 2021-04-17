@@ -7,4 +7,5 @@ BooksApp.Services -> Servicio HTTPClient para conexion al fake API
 BooksApp.Web -> Web MVC para interaccion con el usuario  
 
 # Herramientas Utilizadas
-Nunit -> Permite crear tests con facilidad
+Nunit -> Permite crear tests con facilidad  
+AbstractValidator -> Permite crear validaciones separadas de las entidades y asi tener el codigo mas limpio y errores mas manejables
