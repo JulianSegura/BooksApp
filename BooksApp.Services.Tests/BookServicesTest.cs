@@ -14,26 +14,45 @@ namespace BooksApp.Services.Tests
         [Test]
         public void Connects_And_Returns_All_Books()
         {
+            var expected = HttpStatusCode.OK;
+
             var result = _sut.GetAllAsync().StatusCode;
-            Assert.AreEqual(HttpStatusCode.OK, result);
+
+            Assert.That(result, Is.EqualTo(expected));
         }
 
+
         [Test]
-        public void Finds_And_Retuns_Existing_Book_By_Id()
+        public void Book_Exists()
         {
             int id = 1;
-            var result = _sut.GetByIdAsync(id);
+            bool expected = true;
 
-            Assert.IsTrue(result.IsSuccessStatusCode);
+            var result = _sut.Exists(id);
+
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         [Test]
         public void Book_Doesnt_Exists()
         {
             int id = 0;
+            bool expected = false;
+
             var result = _sut.Exists(id);
 
-            Assert.IsFalse(result);
+            Assert.That(result, Is.EqualTo(expected));
         }
+
+        [Test]
+        public void Finds_And_Retuns_Existing_Book_By_Id()
+        {
+            int id = 1;
+
+            var result = _sut.GetByIdAsync(id);
+
+            Assert.IsTrue(result.IsSuccessStatusCode);
+        }
+
     }
 }

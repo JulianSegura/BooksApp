@@ -27,6 +27,7 @@ namespace BooksApp.API.Controllers
             var booksList = JsonConvert.DeserializeObject<List<Book>>(resultResponse);
 
             return booksList;
+            
         }
 
         [HttpGet("{id}")]
@@ -45,8 +46,8 @@ namespace BooksApp.API.Controllers
         {
             //ToDo: Add Validationn to the book that is going to be added(try fluent validation)
 
-            var httpContent = GetHttpContent(book);
-
+            var httpContent = CreateHttptStringContent(book);
+            
             var result = _bookService.PostAsync(httpContent);
             //ToDo: Check statuscode to return appropiate error;
             var resultResponse = await result.Content.ReadAsStringAsync();
@@ -69,7 +70,7 @@ namespace BooksApp.API.Controllers
             book.Excerpt = bookUpdate.Excerpt;
             book.PublishDate = bookUpdate.PublishDate;
 
-            var httpContent = GetHttpContent(book);
+            var httpContent = CreateHttptStringContent(book);
 
             var result = _bookService.PutAsync(id, httpContent);
             var resultResponse = await result.Content.ReadAsStringAsync();
@@ -88,7 +89,7 @@ namespace BooksApp.API.Controllers
             return Ok();
         }
 
-        private StringContent GetHttpContent(Book book)
+        private StringContent CreateHttptStringContent(Book book)
         {
             var httpContent = new StringContent(JsonConvert.SerializeObject(book));
             httpContent.Headers.ContentType.MediaType = "application/json";
