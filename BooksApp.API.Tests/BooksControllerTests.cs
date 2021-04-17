@@ -1,8 +1,8 @@
 using NUnit.Framework;
 
-namespace BooksApp.Services.Tests
+namespace BooksApp.API.Tests
 {
-    public class Tests
+    public class BooksControllerTests
     {
         [SetUp]
         public void Setup()
