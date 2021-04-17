@@ -44,7 +44,7 @@ namespace BooksApp.Services
         {
             var url = $"{_path}/{id}";
             var result = _client.GetAsync(url).Result;
-            
+
             if (result.IsSuccessStatusCode) return true;
             return false;
         }
