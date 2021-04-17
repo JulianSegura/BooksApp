@@ -1,6 +1,8 @@
 using BooksApp.API.Controllers;
+using BooksApp.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
+using System;
 using System.Linq;
 using System.Net;
 
@@ -36,7 +38,16 @@ namespace BooksApp.API.Tests
             var result = _sut.GetById(id).Result.Result;
 
             Assert.That(result, Is.InstanceOf<NotFoundResult>());
+        }
 
+        [Test]
+        public void Add_Book()
+        {
+            var book = new Book() {Title = "TestBook", PageCount = 50, Excerpt = "TestBook Summary", Description="Book Description", PublishDate = DateTime.Now };
+
+            var result = _sut.AddBook(book).Result.Value;
+            
+            Assert.That(result, Is.InstanceOf<Book>());
         }
     }
 }
