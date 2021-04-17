@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace BooksApp.Services
 {
-    //Servicio para conectarse al fakeApi
+    //I use this service to connect to the fake API. 
+
     public class BookServices
     {
         private HttpClient _client = new HttpClient();
