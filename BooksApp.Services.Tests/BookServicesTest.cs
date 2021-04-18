@@ -9,7 +9,7 @@ namespace BooksApp.Services.Tests
 {
     public class BookServicesTest
     {
-        private readonly BookServices _sut = new BookServices();
+        private readonly BookServices _sut;
         
         [Test]
         public void Connects_And_Returns_All_Books()

@@ -10,8 +10,22 @@ namespace BooksApp.Services
 
     public class BookServices
     {
+
         private HttpClient _client = new HttpClient();
         private readonly string _path = "https://fakerestapi.azurewebsites.net/api/v1/Books";
+
+        private static BookServices instance = null;
+
+        public static BookServices Start()
+        {
+            return instance ??= new BookServices();
+        }
+
+        private BookServices()
+        {
+
+        }
+
 
         public HttpResponseMessage GetAllAsync()
         {

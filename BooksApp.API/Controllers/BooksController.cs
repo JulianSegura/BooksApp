@@ -1,5 +1,7 @@
 ﻿using BooksApp.API.Models;
+using BooksApp.API.Validations;
 using BooksApp.Services;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,8 +19,14 @@ namespace BooksApp.API.Controllers
     [Route("[controller]")]
     public class BooksController : ControllerBase
     {
-        private readonly BookServices _bookService = new BookServices();
-        
+        private readonly BookServices _bookService;
+        private readonly IValidator<Book> _validator;
+        public BooksController()
+        {
+            _bookService = BookServices.Start();
+            _validator = new BookValidator(_bookService);
+        }
+
         [HttpGet]
         public async Task<IEnumerable<Book>> Get()
         {
@@ -44,7 +52,9 @@ namespace BooksApp.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Book>> AddBook([FromBody] Book book)
         {
-            //ToDo: Add Validationn to the book that is going to be added(try fluent validation)
+            var validationResult = _validator.Validate(book);
+            if (!validationResult.IsValid) return BadRequest(validationResult.Errors);
+            //ToDo: Explore option of creating an AddBookDTO. That way I can avoid the ID being sent from the FrontEnd
 
             var httpContent = CreateHttptStringContent(book);
             
@@ -59,7 +69,7 @@ namespace BooksApp.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook(int id, [FromBody] Book bookUpdate)
         {
-            //ToDo: Add validation to bookupdate (try fluent validation)
+            //ToDo: Add validation to bookUpdate (try fluent validation)
 
             var book =  JsonConvert.DeserializeObject<Book>(await _bookService.GetByIdAsync(id).Content.ReadAsStringAsync());
             if (book == null) return NotFound(bookUpdate);
