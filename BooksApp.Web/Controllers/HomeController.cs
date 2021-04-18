@@ -1,37 +1,38 @@
 ﻿using BooksApp.Web.Models;
+using BooksApp.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace BooksApp.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+        private readonly BooksService _bookService = new BooksService();
 
         public IActionResult Index()
         {
-            return View();
+            var apiResponse = _bookService.GetAllAsync();
+            var responseString = apiResponse.Content.ReadAsStringAsync().Result;
+            var bookList = JsonConvert.DeserializeObject<List<BookDTO>>(responseString);
+
+            return View(bookList);
         }
 
-        public IActionResult Privacy()
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
-        }
+            var apiResponse = _bookService.GetByIdAsync(id);
+            var responseString = await apiResponse.Content.ReadAsStringAsync();
+            var book = JsonConvert.DeserializeObject<BookDTO>(responseString);
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(book);
         }
     }
 }

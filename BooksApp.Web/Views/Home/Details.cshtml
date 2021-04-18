@@ -1,0 +1,55 @@
+﻿@model BookDTO
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1 class="accordion">Detalles Del Libro</h1>
+
+<div>
+    <div>
+        @Html.ActionLink("Editar", "Edit", new { id = Model.Id }) |
+        <a asp-action="Index">Regresar Al Listado</a>
+    </div>
+
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayName("Titulo")
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Descripcion")
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Paginas")
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PageCount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Extracto")
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Excerpt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Fecha De Publicacion")
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PublishDate)
+        </dd>
+    </dl>
+</div>
+

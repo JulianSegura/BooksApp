@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BooksApp.API\BooksApp.API.csproj" />
     <ProjectReference Include="..\BooksApp.Service\BooksApp.Services.csproj" />
   </ItemGroup>
 
