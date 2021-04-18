@@ -18,21 +18,45 @@ namespace BooksApp.Web.Controllers
 
         public IActionResult Index()
         {
-            var apiResponse = _bookService.GetAllAsync();
-            var responseString = apiResponse.Content.ReadAsStringAsync().Result;
-            var bookList = JsonConvert.DeserializeObject<List<BookDTO>>(responseString);
-
-            return View(bookList);
+            return View(GetBooks());
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var apiResponse = _bookService.GetByIdAsync(id);
-            var responseString = await apiResponse.Content.ReadAsStringAsync();
-            var book = JsonConvert.DeserializeObject<BookDTO>(responseString);
+            var book = GetBooks(id).FirstOrDefault();
 
             return View(book);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var book = GetBooks(id).FirstOrDefault();
+
+            //ToDo: Create View for Edit
+            return View(book);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Edit(BookDTO book)
+        {
+            //ToDo: Add validation to DTO before sending to edit
+        }
+
+        private List<BookDTO> GetBooks( int id=0)
+        {
+            HttpResponseMessage apiResponse=new HttpResponseMessage();
+
+            apiResponse=(id == 0) ? _bookService.GetAllAsync() : _bookService.GetByIdAsync(id);
+            var responseString = apiResponse.Content.ReadAsStringAsync().Result;
+
+            var lst = new List<BookDTO>();
+
+            if (id == 0) lst = JsonConvert.DeserializeObject<List<BookDTO>>(responseString);
+            else lst.Add(JsonConvert.DeserializeObject<BookDTO>(responseString));
+
+            return lst;
         }
     }
 }
