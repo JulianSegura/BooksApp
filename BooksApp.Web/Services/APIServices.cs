@@ -1,35 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace BooksApp.Services
+namespace BooksApp.Web.Services
 {
-    //I use this service to connect to the fake API. 
-    //Can be agnostic by injecting the Path in the constructor.
-    //So i can use it for the FrontEnd connection to my API
-
-    public class BookServices
+    public abstract class APIServices
     {
-        private readonly HttpClient _client  = new HttpClient();
-        private static readonly string _path = "https://fakerestapi.azurewebsites.net/api/v1/Books";
+        //Im assuming the front and the back are 2 projects completely separated. 
+        //They dont share any code, the API is exposed and the WebApp consumes it.
+        //This abstract class is controller agnostic, I pass the controller name on the constructor.
 
-        private static BookServices instance = null;
+        private readonly HttpClient _client = new HttpClient();
+        private readonly string _path = "https://localhost:44331";
 
-        public static BookServices Start()
+        public APIServices(string controller)
         {
-            return instance ??= new BookServices();
+            _path = $"{_path}/{controller}";
         }
-
-        private BookServices()
-        {
-        }
-
 
         public HttpResponseMessage GetAllAsync()
         {
-            return  _client.GetAsync(_path).Result;
+            return _client.GetAsync(_path).Result;
         }
 
         public HttpResponseMessage GetByIdAsync(int id)
@@ -46,7 +37,7 @@ namespace BooksApp.Services
         public HttpResponseMessage PutAsync(int id, HttpContent content)
         {
             var url = $"{_path}/{id}";
-            return  _client.PutAsync(url, content).Result;
+            return _client.PutAsync(url, content).Result;
         }
 
         public async Task<HttpResponseMessage> DeleteAsync(int id)

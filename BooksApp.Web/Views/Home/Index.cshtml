@@ -1,8 +1,57 @@
-﻿@{
+﻿@model IEnumerable<BookDTO>
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Here goes the SEARCHBAR</h1>
+    <p>I also need to add a NewBook Button</p>
+
+    <h1 class="alert-info">Lista De Libros</h1>
+
+    <table class="table table-light" id="BooksTable" role="grid" aria-describedby="BooksTable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PageCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PublishDate)
+                </th>
+                <th align="center"><strong>Opciones</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(item => book.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => book.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => book.PageCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => book.PublishDate)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Detalle", "Details", new { id = book.Id }) |
+                        @Html.ActionLink("Editar", "Edit", new { id = book.Id }) |
+                        @Html.ActionLink("Borrar", "Delete", new { id = book.Id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <label class="alert-success">Total: @Model.Count() </label>
+
 </div>
